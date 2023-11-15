@@ -30,15 +30,14 @@ export default function App() {
 
   /* prettier-ignore */
   const updateTodoText = (id, task) => {
-    const newTodos = toDos.map((todo) => {
+    const newTodos = todos.map((todo) => {
       if (todo.id === id) {
         return {...todo, task}
       } else {
-        return item
+        return todo
       }
-    }
-    )
-    setTodos(newTodos)
+    });
+    setTodos(newTodos);
   };
 
   /* Created preventDefault variable since there is no backend for form*/
