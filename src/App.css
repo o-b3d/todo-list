@@ -29,3 +29,7 @@ body {
 .deleteButton {
   padding: 5px;
 }
+
+.striketext {
+  text-decoration: line-through;
+}
