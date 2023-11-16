@@ -16,11 +16,13 @@ export default function App() {
   const [newTodos, setNewTodos] = useState("");
 
   const addTodo = (text) => {
+    if (!text) return;
     const newTodoListForAddTodo = [
       ...todos,
       { id: todos.length + 1, task: text, done: false },
     ];
     setTodos(newTodoListForAddTodo);
+    setNewTodos("");
   };
 
   const deleteTodo = (id) => {
@@ -28,16 +30,27 @@ export default function App() {
     setTodos(newTodoListForDeleteTodo);
   };
 
-  /* prettier-ignore */
   const updateTodoText = (id, task) => {
     const newTodos = todos.map((todo) => {
       if (todo.id === id) {
-        return {...todo, task}
+        return { ...todo, task };
       } else {
-        return todo
+        return todo;
       }
     });
     setTodos(newTodos);
+  };
+
+  const updateCheckboxStatus = (id, checked) => {
+    setTodos(
+      todos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, done: checked };
+        } else {
+          return todo;
+        }
+      })
+    );
   };
 
   /* Created preventDefault variable since there is no backend for form*/
@@ -71,11 +84,11 @@ export default function App() {
                   value={item.done}
                   /* Same as below, need to figure out how to update the state using the onChange eventListener to
                   update using striketext css value inside Input Text classname*/
-                  onChange={() => {}}
+                  onChange={(event) =>
+                    updateCheckboxStatus(item.id, event.target.checked)
+                  }
                 />
                 {/* Replaced below Span tag with Input tag to make the created To-Do modifiable */}
-                {/* -> I have to figure out a way to update the state of "todos" using the onChange eventListener
-                and with the declared variable updateTodoText I created*/}
                 {/* prettier-ignore */}
                 <input
                   type="text"
