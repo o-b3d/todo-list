@@ -30,6 +30,11 @@ body {
   padding: 5px;
 }
 
-.striketext {
+.checkedBoxText {
   text-decoration: line-through;
+}
+
+.checkedBoxStyle {
+  opacity: 0.5;
+  transition: all 0.3s;
 }

@@ -15,19 +15,35 @@ export default function App() {
 
   const [newTodos, setNewTodos] = useState("");
 
+  /* Added "else if" statement to apply window.confirm to prompt confirmation of adding blank To-Do
+  and set task to "" to enter blank To-Do */
   const addTodo = (text) => {
-    if (!text) return;
-    const newTodoListForAddTodo = [
-      ...todos,
-      { id: todos.length + 1, task: text, done: false },
-    ];
-    setTodos(newTodoListForAddTodo);
-    setNewTodos("");
+    if (text) {
+      const newTodoListForAddTodo = [
+        ...todos,
+        { id: todos.length + 1, task: text, done: false },
+      ];
+      setTodos(newTodoListForAddTodo);
+      setNewTodos("");
+    } else if (
+      window.confirm(
+        "You did not enter any text. Do you still want to add a blank item?"
+      )
+    ) {
+      const newTodoListForAddTodo = [
+        ...todos,
+        { id: todos.length + 1, task: "", done: false },
+      ];
+      setTodos(newTodoListForAddTodo);
+    }
   };
 
+  /* Added "if" statement to apply window.confirm to prompt confirmation of deleting To-Do */
   const deleteTodo = (id) => {
-    const newTodoListForDeleteTodo = todos.filter((item) => item.id != id);
-    setTodos(newTodoListForDeleteTodo);
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      const newTodoListForDeleteTodo = todos.filter((item) => item.id != id);
+      setTodos(newTodoListForDeleteTodo);
+    }
   };
 
   const updateTodoText = (id, task) => {
@@ -78,12 +94,13 @@ export default function App() {
         <ul className="todoList">
           {todos.map((item) => {
             return (
-              <li key={item.id} className="todoListItem">
+              <li
+                key={item.id}
+                className={`todoListItem ${item.done ? "checkedBoxStyle" : ""}`}
+              >
                 <input
                   type="checkbox"
                   value={item.done}
-                  /* Same as below, need to figure out how to update the state using the onChange eventListener to
-                  update using striketext css value inside Input Text classname*/
                   onChange={(event) =>
                     updateCheckboxStatus(item.id, event.target.checked)
                   }
@@ -91,16 +108,19 @@ export default function App() {
                 {/* Replaced below Span tag with Input tag to make the created To-Do modifiable */}
                 {/* prettier-ignore */}
                 <input
-                  type="text"
                   /* Added conditional operator to className to add striketext css value to Input Text if checkbox is checked */
-                  className={`todoContent ${item.done ? 'striketext' : ''}`}
+                  type="text"
+                  className={`todoContent ${item.done ? 'checkedBoxText' : ''}`}
                   value={item.task}
-                  onChange={(event) => updateTodoText(item.id, event.target.value)
-                  }
+                  onChange={(event) => updateTodoText(item.id, event.target.value)}
+                  disabled={item.done}
                   />
+                {/* prettier-ignore */}
                 <button
+                /* Add disabled attribute to button to disable Delete button if checkbox is checked */
                   onClick={() => deleteTodo(item.id)}
-                  className="deleteButton"
+                  className={`deleteButton ${item.done ? "checkedBoxStyle" : ""}`}
+                  disabled={item.done}
                 >
                   Delete
                 </button>
@@ -109,7 +129,6 @@ export default function App() {
           })}
         </ul>
       </div>
-      {/* Create Span that modifies existing To-Do's and add function to button crossing out To-Do and make it able to press enter*/}
     </>
   );
 }
