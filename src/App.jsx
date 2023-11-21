@@ -2,9 +2,6 @@ import { useState } from "react";
 import "./App.css";
 
 export default function App() {
-  {
-    /*For a useState: todos is getter, setTodos is setter */
-  }
   const [todos, setTodos] = useState([
     {
       id: 1,
@@ -15,8 +12,6 @@ export default function App() {
 
   const [newTodos, setNewTodos] = useState("");
 
-  /* Added "else if" statement to apply window.confirm to prompt confirmation of adding blank To-Do
-  and set task to "" to enter blank To-Do */
   const addTodo = (text) => {
     if (text) {
       const newTodoListForAddTodo = [
@@ -38,7 +33,6 @@ export default function App() {
     }
   };
 
-  /* Added "if" statement to apply window.confirm to prompt confirmation of deleting To-Do */
   const deleteTodo = (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       const newTodoListForDeleteTodo = todos.filter((item) => item.id != id);
@@ -69,7 +63,6 @@ export default function App() {
     );
   };
 
-  /* Created preventDefault variable since there is no backend for form*/
   /* prettier-ignore */
   const preventDefault = (e) => {e.preventDefault()};
 
@@ -78,7 +71,6 @@ export default function App() {
       <div className="todoListContainer">
         <h3>To-Do List {"-->"}</h3>
         <div className="newTodoContainer">
-          {/* Wrapped input and button inside Form tag to make the input field work with the enter key */}
           <form onSubmit={preventDefault}>
             <input
               value={newTodos}
@@ -105,19 +97,17 @@ export default function App() {
                     updateCheckboxStatus(item.id, event.target.checked)
                   }
                 />
-                {/* Replaced below Span tag with Input tag to make the created To-Do modifiable */}
-                {/* prettier-ignore */}
                 <input
-                  /* Added conditional operator to className to add striketext css value to Input Text if checkbox is checked */
                   type="text"
-                  className={`todoContent ${item.done ? 'checkedBoxText' : ''}`}
+                  className={`todoContent ${item.done ? "checkedBoxText" : ""}`}
                   value={item.task}
-                  onChange={(event) => updateTodoText(item.id, event.target.value)}
+                  onChange={(event) =>
+                    updateTodoText(item.id, event.target.value)
+                  }
                   disabled={item.done}
-                  />
+                />
                 {/* prettier-ignore */}
                 <button
-                /* Add disabled attribute to button to disable Delete button if checkbox is checked */
                   onClick={() => deleteTodo(item.id)}
                   className={`deleteButton ${item.done ? "checkedBoxStyle" : ""}`}
                   disabled={item.done}
